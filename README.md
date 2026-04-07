@@ -143,9 +143,9 @@ MIT © Saroxtech 2026
 
 [discord]: https://img.shields.io/discord/1490718135081242745?style=for-the-badge&logo=discord&logoColor=white&label=Join&labelColor=1e2124&color=7289da
 [discord-url]: https://discord.gg/BXEDCJP7mT
-[license]: https://img.shields.io/github/license/sarox-tech/Recollect?color=007acc
+[license]: https://img.shields.io/github/license/sarox-dev/Recollect?color=007acc
 [license-url]: https://github.com/sarox-dev/Recollect/blob/main/LICENSE
-[stars]: https://img.shields.io/github/stars/sarox-tech/Recollect?style=social
+[stars]: https://img.shields.io/github/stars/sarox-dev/Recollect?style=social
 [stars-url]: https://github.com/sarox-dev/Recollect
 [python]: https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=yellow
 [python-url]: https://python.org
