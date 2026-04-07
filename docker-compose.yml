@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  searxng:
+    image: searxng/searxng
+    container_name: searxng_api
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./searxng:/etc/searxng
+    environment:
+      - BASE_URL=http://localhost:8080/
+      - INSTANCE_NAME=local-searxng

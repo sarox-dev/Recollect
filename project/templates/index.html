@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSINT TUI Search</title>
+<style>
+  body {
+    margin: 0;
+    background: #0a0f1b;
+    color: #cfd8dc;
+    font-family: monospace;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: #04132b;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  input[type=text] {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    border: none;
+    background: #08172d;
+    color: #cfd8dc;
+  }
+  button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    background: #0bc5ea;
+    color: #04132b;
+    cursor: pointer;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+  #results {
+    flex: 3;
+    overflow-y: auto;
+    padding: 0.5rem;
+  }
+  #results .result-item {
+    padding: 0.6rem;
+    border-bottom: 1px solid #0b1a30;
+  }
+  #results .result-item a {
+    color: #2dd4bf;
+    text-decoration: none;
+  }
+  #results .result-item a:hover {
+    text-decoration: underline;
+  }
+  #log {
+    flex: 1;
+    background: #04132b;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    overflow-y: auto;
+    border-left: 1px solid #0b1a30;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <input id="q" type="text" placeholder="Search query...">
+  <button onclick="startSearch()">Search</button>
+</header>
+
+<main>
+  <div id="results"></div>
+  <div id="log"></div>
+</main>
+
+<script>
+let page = 0;
+let query = '';
+let loading = false;
+
+function appendLog(msg) {
+  const log = document.getElementById('log');
+  const t = document.createElement('div');
+  t.textContent = `${new Date().toLocaleTimeString()} · ${msg}`;
+  log.prepend(t);
+  if(log.children.length>50) log.removeChild(log.lastChild);
+}
+
+async function fetchResults() {
+  if(loading) return;
+  loading = true;
+  appendLog(`Loading page ${page+1}`);
+  try {
+    const res = await fetch(`/search?q=${encodeURIComponent(query)}&page=${page}`);
+    const data = await res.json();
+    const resultsDiv = document.getElementById('results');
+
+    if(!data.results || data.results.length === 0){
+      appendLog('No more results');
+      loading = false;
+      return;
+    }
+
+    data.results.forEach(item=>{
+      const div = document.createElement('div');
+      div.className = 'result-item';
+      div.innerHTML = `<a href="${item.url}" target="_blank">${item.title||item.url}</a>
+                       <div>${item.content||item.description||''}</div>`;
+      resultsDiv.appendChild(div);
+    });
+    page++;
+    loading = false;
+  } catch(e){
+    appendLog('Error fetching: '+e.message);
+    loading=false;
+  }
+}
+
+function startSearch() {
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = '';
+  query = document.getElementById('q').value.trim();
+  page = 0;
+  fetchResults();
+}
+
+// --- Infinite scroll ---
+document.getElementById('results').addEventListener('scroll', ()=>{
+  const r = document.getElementById('results');
+  if(r.scrollTop + r.clientHeight >= r.scrollHeight - 20){
+    fetchResults();
+  }
+});
+</script>
+</body>
+</html>
