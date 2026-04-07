@@ -1,5 +1,5 @@
-subprocess
-sys
-time
 requests
-flask
+fastapi
+httpx
+uvicorn
+jinja2

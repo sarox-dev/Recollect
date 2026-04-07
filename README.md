@@ -57,10 +57,8 @@ Saved queries + alerts (new GitHub repos, forum posts, etc.)
 
 ## 🛠 Tech Stack
 ```
-Backend: FastAPI + PostgreSQL + Meilisearch/Typesense
-Web: SearXNG (isolated service)
-Frontend: Responsive UI (React/Vue/Svelte)
-CLI: Python Click
+Backend: FastAPI + SearXNG
+Frontend: HTML/CSS/JS
 Deployment: Docker Compose
 ```
 ## 🎯 Target Users
@@ -98,12 +96,20 @@ Browser extension
 
 ## 🚀 Quick Start
 ```bash
-# Clone & run (Docker Compose)
+# Clone the repo
 git clone https://github.com/sarox-dev/Recollect
 cd recollect
-docker-compose up
 
-# Access at http://localhost:3000
+# Copy environment file
+cp .env.example .env
+
+# Edit .env if needed (ports, etc.)
+
+# Run with Docker Compose
+docker compose up -d
+
+# Access the app at http://localhost:8000
+# SearXNG API at http://localhost:8080 (if exposed)
 ```
 ### 💰 Business Model
 Free self-hosted core + paid hosted/advanced features:

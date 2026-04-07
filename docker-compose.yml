@@ -1,13 +1,25 @@
-version: "3.7"
-
 services:
   searxng:
     image: searxng/searxng
     container_name: searxng_api
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:${SEARXNG_PORT}:8080"
     volumes:
       - ./searxng:/etc/searxng
     environment:
-      - BASE_URL=http://localhost:8080/
-      - INSTANCE_NAME=local-searxng
+      - BASE_URL=${SEARXNG_BASE_URL}
+      - INSTANCE_NAME=${SEARXNG_INSTANCE_NAME}
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: recollect_app
+    ports:
+      - "${APP_PORT}:5000"
+    depends_on:
+      - searxng
+    environment:
+      - SEARXNG_URL=${SEARXNG_BASE_URL}
+    volumes:
+      - ./app:/app
