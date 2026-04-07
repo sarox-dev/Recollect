@@ -1,5 +1,5 @@
 # Recollect
-[![License][license]][license-url]   [![Stars][stars]][stars-url]   [![Python][python]][python-url]   [![Status][status]][status-url]   [![Docker][docker]]  [docker-url]
+[![License][license]][license-url]   [![Stars][stars]][stars-url]   [![Python][python]][python-url]   [![Status][status]][status-url]   [![Docker][docker]][docker-url]
 
 Your self-hosted unified search & knowledge memory layer
 A single interface to search web, GitHub, local files — and remember everything you found.
