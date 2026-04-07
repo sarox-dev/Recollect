@@ -68,7 +68,17 @@ Homelab users — utilize server resources effectively
 
 Power users — heavy technical information consumers
 
-## 📋 MVP Roadmap
+## � Documentation
+
+- **[📖 User Guide](docs/user-guide.md)** - How to use Recollect
+- **[🚀 Deployment](docs/deployment.md)** - Installation and deployment
+- **[🔧 Development](docs/development.md)** - Development setup and guidelines
+- **[🔌 API Reference](docs/api.md)** - API documentation
+- **[🏗️ Architecture](docs/architecture.md)** - System architecture
+- **[🔧 Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
+- **[🤝 Contributing](CONTRIBUTING.md)** - How to contribute
+- **[🔒 Security](SECURITY.md)** - Security policy and reporting
+- **[📜 Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
 ### Phase 1 (Current)
 SearXNG integration
 
@@ -130,6 +140,15 @@ Commit changes (git commit -m 'Add search memory')
 Push & open PR
 
 See CONTRIBUTING.md for details.
+
+## 🌐 Community & Support
+
+- **📖 [Documentation](docs/)** - Comprehensive guides and references
+- **🐛 [Issues](https://github.com/sarox-dev/Recollect/issues)** - Bug reports and feature requests
+- **💬 [Discussions](https://github.com/sarox-dev/Recollect/discussions)** - General questions and community chat
+- **🎮 [Discord](https://discord.gg/BXEDCJP7mT)** - Real-time community support
+- **🔒 [Security](SECURITY.md)** - Report security vulnerabilities
+- **📜 [Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
 
 ## 📄 License
 MIT © Saroxtech 2026
