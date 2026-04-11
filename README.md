@@ -72,17 +72,136 @@ Recollect turns browsing into a **structured knowledge system**:
 Search → Open page → Highlight → Save → Organize → Reuse
 ```
 
+---
 
-## Join Discord
+## 🎯 Use Cases
+
+Recollect is designed for people who constantly work with information:
+
+- 💻 Developers saving fixes, snippets, and solutions  
+- 📰 Journalists collecting and structuring research  
+- 📚 Students organizing learning materials  
+- 🔐 Privacy-focused users who avoid tracking  
+
+---
+
+## 🧠 Philosophy
+
+Recollect is built on a simple principle:
+
+> You shouldn't have to search for the same solution twice.
+
+Instead of passive browsing, Recollect turns the web into an **active knowledge system**.
+
+---
+
+## 🏗️ Architecture (Concept)
+
+Recollect is designed as a modular system:
+
+- 🔍 Search layer (powered by SearXNG)
+- 💾 Local-first data storage
+- 🌐 Optional cloud sync (future)
+- 🧩 Browser extension for capturing content
+
+---
+
+## ⚡ Getting Started (Development)
+
+```bash
+git clone https://github.com/sarox-dev/Recollect.git
+cd Recollect
+```
+
+## ⚙️ Setup and Run
+
+### 1. Start the application
+
+```bash
+docker compose up
+```
+### 2. Open in your browser
+
+http://localhost:8000
+
+---
+
+## 🛣️ Roadmap
+### MVP
+ Search UI
+ Save content (manual)
+ Projects system
+ Local storage
+### Next
+ Browser extension
+ Backend + authentication
+ Hosted version
+### Future
+ AI features
+ Integrations
+ Plugin system
+ Themes
+
+## 🔐 Privacy
+
+### Recollect is built with privacy in mind:
+
+No tracking in core search
+Local-first data storage
+Optional self-hosting
+User-controlled data
+
+## 💰 Business Model (Planned)
+
+### 🟢 Open Source Core
+Self-hostable
+Free forever
+
+### 🟡 Hosted Free Tier
+Limited storage
+Basic features
+
+### 🔴 Premium
+Cloud sync
+AI features
+Advanced capabilities
+
+## 🤝 Contributing
+
+This project is currently in early development.
+
+Contributions, ideas, and feedback are welcome:
+
+Open an issue
+Suggest features
+Join the discussion on Discord
 [![Discord][discord]][discord-url]
+
+## 📊 Status
+
+🚧 This project is currently in active development (WIP)
+
+Expect:
+
+breaking changes
+incomplete features
+rapid iteration
+
+## 🙌 Support the Project
+
+If you like the idea:
+
+⭐ Star the repository
+🐛 Report issues
+💬 Join the Discord
+
+## 🌐 Links
+🌍 Website: https://recollect.saroxtech.com
+ (coming soon)
+💬 Discord: https://discord.gg/BXEDCJP7mT
 
 ## 📄 License
 MIT © Saroxtech 2026
-
-🙌 Support the Project
-⭐ Star on GitHub
-🐛 Report issues
-💬 Join Discord
 
 [Live demo](https://recollect.saroxtech.com) coming soon
 
