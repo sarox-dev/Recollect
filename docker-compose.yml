@@ -1,25 +1,26 @@
 services:
   searxng:
+    container_name: searxng-recollect
     image: searxng/searxng
-    container_name: searxng_api
-    ports:
-      - "127.0.0.1:${SEARXNG_PORT}:8080"
+    expose:
+      - "${SEARXNG_PORT}"
     volumes:
       - ./searxng:/etc/searxng
     environment:
-      - BASE_URL=${SEARXNG_BASE_URL}
-      - INSTANCE_NAME=${SEARXNG_INSTANCE_NAME}
-
+      - SEARXNG_PORT=${SEARXNG_PORT}
+      - SEARXNG_BIND_ADDRESS=${SEARXNG_BIND_ADDRESS}
+      - SEARXNG_BASE_URL=${SEARXNG_URL}
+      - SEARXNG_METHOD=${SEARXNG_METHOD}
   app:
+    container_name: recollect-app
     build:
       context: .
-      dockerfile: docker/app/Dockerfile
-    container_name: recollect_app
+      dockerfile: Dockerfile
     ports:
       - "${APP_PORT}:5000"
     depends_on:
       - searxng
     environment:
-      - SEARXNG_URL=${SEARXNG_BASE_URL}
-    volumes:
-      - ./app:/app
+      - SEARXNG_URL=${SEARXNG_URL}
+      - APP_HOST=${APP_HOST}
+      - APP_PORT=${APP_PORT}

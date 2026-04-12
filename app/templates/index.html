@@ -1,301 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recollect - Search</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
-        .header {
-            background-color: #fff;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #4285f4;
-            margin-bottom: 20px;
-        }
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .search-bar {
-            width: 100%;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            outline: none;
-        }
-        .search-bar:focus {
-            border-color: #4285f4;
-        }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .tab {
-            padding: 10px 20px;
-            margin: 0 5px;
-            background-color: #f1f3f4;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .tab.active {
-            background-color: #4285f4;
-            color: white;
-        }
-        .results {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .result-item {
-            background-color: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .result-title {
-            font-size: 18px;
-            color: #1a0dab;
-            text-decoration: none;
-            margin-bottom: 5px;
-            display: block;
-        }
-        .result-url {
-            color: #006621;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        .result-snippet {
-            color: #545454;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        .image-result {
-            display: inline-block;
-            margin: 5px;
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .image-result img {
-            width: 200px;
-            height: 150px;
-            object-fit: cover;
-        }
-        .loading {
-            text-align: center;
-            padding: 20px;
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="logo">Recollect</div>
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-bar" placeholder="Search...">
-        </div>
-        <div class="tabs">
-            <button class="tab active" data-category="general">All</button>
-            <button class="tab" data-category="images">Images</button>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recollect</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/theme-default.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="page-header">
+        <h1>Recollect</h1>
+        <p>Search the web with SearXNG</p>
+      </header>
+      <main class="search-panel">
+        <form id="search-form" class="search-form">
+          <label for="query" class="sr-only">Search</label>
+          <input id="query" name="q" type="search" placeholder="Enter search terms" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+        <section id="results" class="results"></section>
+      </main>
     </div>
-    <div class="results" id="results"></div>
-    <div class="loading" id="loading">Loading more results...</div>
-
     <script>
-        let currentQuery = '';
-        let currentPage = 1;
-        let currentCategory = 'general';
-        let isLoading = false;
+      const form = document.getElementById('search-form');
+      const queryInput = document.getElementById('query');
+      const resultsNode = document.getElementById('results');
 
-        const searchInput = document.getElementById('search-input');
-        const resultsDiv = document.getElementById('results');
-        const loadingDiv = document.getElementById('loading');
-        const tabs = document.querySelectorAll('.tab');
-
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                tabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                currentCategory = this.dataset.category;
-                if (currentQuery) {
-                    performSearch();
-                }
-            });
-        });
-
-        function performSearch() {
-            currentQuery = searchInput.value.trim();
-            if (!currentQuery) return;
-            currentPage = 1;
-            resultsDiv.innerHTML = '';
-            loadResults();
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const query = queryInput.value.trim();
+        resultsNode.innerHTML = '';
+        if (!query) {
+          resultsNode.textContent = 'Please enter a search term.';
+          return;
         }
-
-        async function loadResults() {
-            if (isLoading) return;
-            isLoading = true;
-            loadingDiv.style.display = 'block';
-
-            try {
-                const response = await fetch(`/search?q=${encodeURIComponent(currentQuery)}&pageno=${currentPage}&categories=${currentCategory}`);
-                const data = await response.json();
-                displayResults(data.results);
-                if (data.has_more) {
-                    currentPage++;
-                } else {
-                    loadingDiv.style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error loading results:', error);
-                loadingDiv.style.display = 'none';
-            } finally {
-                isLoading = false;
-            }
+        const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        if (!response.ok || data.error) {
+          resultsNode.innerHTML = `<div class="message">${data.error || 'Search failed'}</div>`;
+          return;
         }
-
-        function displayResults(results) {
-            results.forEach(result => {
-                const item = document.createElement('div');
-                item.className = 'result-item';
-                if (currentCategory === 'images') {
-                    item.innerHTML = `
-                        <div class="image-result">
-                            <img src="${result.thumbnail || result.img_src}" alt="${result.title}" onerror="this.style.display='none'">
-                        </div>
-                    `;
-                } else {
-                    item.innerHTML = `
-                        <a href="${result.url}" class="result-title" target="_blank">${result.title}</a>
-                        <div class="result-url">${result.url}</div>
-                        <div class="result-snippet">${result.content || result.title}</div>
-                    `;
-                }
-                resultsDiv.appendChild(item);
-            });
+        if (!Array.isArray(data) || data.length === 0) {
+          resultsNode.innerHTML = '<div class="message">No results found.</div>';
+          return;
         }
-
-        // Infinite scroll
-        window.addEventListener('scroll', function() {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-                loadResults();
-            }
-        });
+        resultsNode.innerHTML = data
+          .map(
+            (item) => `
+          <article class="result-card">
+            <a class="result-title" href="${item.url}" target="_blank" rel="noopener noreferrer">${item.title || item.url}</a>
+            <div class="result-url">${item.url}</div>
+            <p class="result-content">${item.content || 'No description available.'}</p>
+          </article>
+        `
+          )
+          .join('');
+      });
     </script>
-</body>
-</html>
-    padding: 0.6rem;
-    border-bottom: 1px solid #0b1a30;
-  }
-  #results .result-item a {
-    color: #2dd4bf;
-    text-decoration: none;
-  }
-  #results .result-item a:hover {
-    text-decoration: underline;
-  }
-  #log {
-    flex: 1;
-    background: #04132b;
-    padding: 0.5rem;
-    font-size: 0.85rem;
-    overflow-y: auto;
-    border-left: 1px solid #0b1a30;
-  }
-</style>
-</head>
-<body>
-
-<header>
-  <input id="q" type="text" placeholder="Search query...">
-  <button onclick="startSearch()">Search</button>
-</header>
-
-<main>
-  <div id="results"></div>
-  <div id="log"></div>
-</main>
-
-<script>
-let page = 0;
-let query = '';
-let loading = false;
-
-function appendLog(msg) {
-  const log = document.getElementById('log');
-  const t = document.createElement('div');
-  t.textContent = `${new Date().toLocaleTimeString()} · ${msg}`;
-  log.prepend(t);
-  if(log.children.length>50) log.removeChild(log.lastChild);
-}
-
-async function fetchResults() {
-  if(loading) return;
-  loading = true;
-  appendLog(`Loading page ${page+1}`);
-  try {
-    const res = await fetch(`/search?q=${encodeURIComponent(query)}&page=${page}`);
-    const data = await res.json();
-    const resultsDiv = document.getElementById('results');
-
-    if(!data.results || data.results.length === 0){
-      appendLog('No more results');
-      loading = false;
-      return;
-    }
-
-    data.results.forEach(item=>{
-      const div = document.createElement('div');
-      div.className = 'result-item';
-      div.innerHTML = `<a href="${item.url}" target="_blank">${item.title||item.url}</a>
-                       <div>${item.content||item.description||''}</div>`;
-      resultsDiv.appendChild(div);
-    });
-    page++;
-    loading = false;
-  } catch(e){
-    appendLog('Error fetching: '+e.message);
-    loading=false;
-  }
-}
-
-function startSearch() {
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = '';
-  query = document.getElementById('q').value.trim();
-  page = 0;
-  fetchResults();
-}
-
-// --- Infinite scroll ---
-document.getElementById('results').addEventListener('scroll', ()=>{
-  const r = document.getElementById('results');
-  if(r.scrollTop + r.clientHeight >= r.scrollHeight - 20){
-    fetchResults();
-  }
-});
-</script>
-</body>
+  </body>
 </html>

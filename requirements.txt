@@ -1,5 +1,5 @@
-requests
 fastapi
-httpx
 uvicorn
+httpx
+requests
 jinja2
