@@ -1,8 +1,20 @@
-# Recollect
+<p align="center">
+  <img src="logo.png" width="120" />
+</p>
 
-[![License][license]][license-url]   [![Stars][stars]][stars-url]   [![Python][python]][python-url]   [![Status][status]][status-url]   [![Docker][docker]][docker-url]
+<h1 align="center">Recollect</h1>
 
-> Turn the web into reusable knowledge.
+<p align="center">
+
+[![License][license]][license-url]
+[![Stars][stars]][stars-url]
+[![Python][python]][python-url]
+[![Status][status]][status-url]
+[![Docker][docker]][docker-url]
+
+</p>
+
+<p align="center">Turn the web into reusable knowledge.</p>
 
 ---
 
