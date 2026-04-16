@@ -585,5 +585,4 @@ For deployment issues:
 
 ---
 
-*Last updated: April 2026*</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/deployment.md
+*Last updated: April 2026*

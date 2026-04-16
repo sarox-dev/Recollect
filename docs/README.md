@@ -45,5 +45,4 @@ This documentation follows these standards:
 - **Up-to-date**: Maintained alongside code changes
 - **Structured**: Consistent formatting and organization
 
-Found an issue with the documentation? [Open an issue](https://github.com/sarox-dev/Recollect/issues/new?labels=documentation) or submit a pull request!</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/README.md
+Found an issue with the documentation? [Open an issue](https://github.com/sarox-dev/Recollect/issues/new?labels=documentation) or submit a pull request!

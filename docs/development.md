@@ -391,5 +391,4 @@ curl -w "@curl-format.txt" -o /dev/null -s "http://localhost:8000/search?q=test"
 
 ---
 
-Happy coding! 🎉</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/development.md
+Happy coding! 🎉

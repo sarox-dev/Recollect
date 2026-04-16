@@ -407,5 +407,4 @@ Check our [GitHub Issues](https://github.com/sarox-dev/Recollect/issues) for pla
 
 ---
 
-*Thank you for using Recollect! Your feedback helps make it better for everyone.*</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/user-guide.md
+*Thank you for using Recollect! Your feedback helps make it better for everyone.*

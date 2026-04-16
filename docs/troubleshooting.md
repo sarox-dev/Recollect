@@ -493,5 +493,4 @@ docker compose logs --tail=50
 
 ---
 
-*This guide is continuously updated. Found a new issue? [Contribute a fix](https://github.com/sarox-dev/Recollect/blob/main/CONTRIBUTING.md)!*</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/troubleshooting.md
+*This guide is continuously updated. Found a new issue? [Contribute a fix](https://github.com/sarox-dev/Recollect/blob/main/CONTRIBUTING.md)!*

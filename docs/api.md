@@ -304,5 +304,4 @@ For API-related issues:
 
 ---
 
-*This API documentation is automatically generated and maintained alongside the codebase.*</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/api.md
+*This API documentation is automatically generated and maintained alongside the codebase.*

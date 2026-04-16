@@ -131,6 +131,10 @@ input {
   color: rgba(230, 230, 230, 0.9);
 }
 
+.sentinel {
+  height: 1px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

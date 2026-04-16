@@ -203,5 +203,4 @@ docker/
 - User management service
 - Analytics service
 
-This architecture provides a solid foundation for a privacy-focused, scalable search platform while maintaining simplicity for development and deployment.</content>
-<parameter name="filePath">/home/deltauser/Desktop/code/web/Recollect/docs/architecture.md
+This architecture provides a solid foundation for a privacy-focused, scalable search platform while maintaining simplicity for development and deployment.

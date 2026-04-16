@@ -20,42 +20,85 @@
           <button type="submit">Search</button>
         </form>
         <section id="results" class="results"></section>
+        <div id="results-sentinel" class="sentinel"></div>
       </main>
     </div>
     <script>
       const form = document.getElementById('search-form');
       const queryInput = document.getElementById('query');
       const resultsNode = document.getElementById('results');
+      const sentinel = document.getElementById('results-sentinel');
 
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const query = queryInput.value.trim();
-        resultsNode.innerHTML = '';
-        if (!query) {
-          resultsNode.textContent = 'Please enter a search term.';
+      let currentQuery = '';
+      let currentPage = 1;
+      let loading = false;
+      let hasMore = false;
+
+      async function loadResults(page) {
+        if (loading || !currentQuery || !hasMore && page > 1) {
           return;
         }
-        const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+        loading = true;
+        const response = await fetch(`/search?q=${encodeURIComponent(currentQuery)}&page=${page}`);
         const data = await response.json();
         if (!response.ok || data.error) {
-          resultsNode.innerHTML = `<div class="message">${data.error || 'Search failed'}</div>`;
+          if (page === 1) {
+            resultsNode.innerHTML = `<div class="message">${data.error || 'Search failed'}</div>`;
+          }
+          loading = false;
+          hasMore = false;
           return;
         }
         if (!Array.isArray(data) || data.length === 0) {
-          resultsNode.innerHTML = '<div class="message">No results found.</div>';
+          if (page === 1) {
+            resultsNode.innerHTML = '<div class="message">No results found.</div>';
+          }
+          hasMore = false;
+          loading = false;
           return;
         }
-        resultsNode.innerHTML = data
-          .map(
-            (item) => `
+        if (page === 1) {
+          resultsNode.innerHTML = '';
+        }
+        resultsNode.insertAdjacentHTML(
+          'beforeend',
+          data
+            .map(
+              (item) => `
           <article class="result-card">
             <a class="result-title" href="${item.url}" target="_blank" rel="noopener noreferrer">${item.title || item.url}</a>
             <div class="result-url">${item.url}</div>
             <p class="result-content">${item.content || 'No description available.'}</p>
           </article>
         `
-          )
-          .join('');
+            )
+            .join('')
+        );
+        hasMore = data.length > 0;
+        currentPage = page;
+        loading = false;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !loading && hasMore) {
+          loadResults(currentPage + 1);
+        }
+      }, {
+        rootMargin: '200px',
+      });
+      observer.observe(sentinel);
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        currentQuery = queryInput.value.trim();
+        currentPage = 1;
+        hasMore = true;
+        resultsNode.innerHTML = '';
+        if (!currentQuery) {
+          resultsNode.textContent = 'Please enter a search term.';
+          return;
+        }
+        await loadResults(1);
       });
     </script>
   </body>
