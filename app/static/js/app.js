@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('search-form');
     const queryInput = document.getElementById('query');
     const resultsNode = document.getElementById('results');
+    const webResultsNode = document.getElementById('web-results');
+    const imageResultsNode = document.getElementById('image-results');
     const sentinel = document.getElementById('results-sentinel');
     const settingsButton = document.getElementById('settings-button');
     const settingsOverlay = document.getElementById('settings-overlay');
@@ -43,12 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     type: 'checkbox-group',
                     options: [
                         { value: 'duckduckgo', label: 'DuckDuckGo' },
-                        { value: 'brave', label: 'Brave' },
                         { value: 'bing', label: 'Bing' },
                         { value: 'google', label: 'Google' },
-                        { value: 'yahoo', label: 'Yahoo' },
                         { value: 'wikipedia', label: 'Wikipedia' },
-                        { value: 'qwant', label: 'Qwant' },
                         { value: 'github', label: 'GitHub' }
                     ],
                     default: ['duckduckgo']
@@ -90,7 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setValue(key, value) {
         settingsState[key] = value
-        localStorage.setItem(key, String(value))
+
+        if (Array.isArray(value)) {
+            localStorage.setItem(key, JSON.stringify(value))
+        } else {
+            localStorage.setItem(key, String(value))
+        }
     }
 
     function createField(item) {
@@ -267,7 +271,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function initSettingsState() {
+        settingsSchema.forEach(category => {
+            category.items.forEach(item => {
+                settingsState[item.key] = getValue(item)
+            })
+        })
+    }
+
     sanitizeCategory()
+    initSettingsState()
+
+    function getEngines() {
+        const engines = settingsState.engines
+        return Array.isArray(engines) ? engines.join(',') : 'duckduckgo'
+    }
 
     function updateHeader() {
         const category = settingsSchema.find(c => c.category === activeCategory)
@@ -280,10 +298,44 @@ document.addEventListener('DOMContentLoaded', () => {
     applySettings();
 
 
-    function getEngines() {
-        const engines = settingsState.engines
-        return Array.isArray(engines) ? engines.join(',') : 'duckduckgo'
+    let activeTab = 'web';
+
+    function setActiveTab(tab) {
+        activeTab = tab;
+
+        webResultsNode.style.display = 'none';
+        imageResultsNode.style.display = 'none';
+
+        if (tab === 'web') webResultsNode.style.display = 'block';
+        if (tab === 'images') imageResultsNode.style.display = 'grid';
     }
+    setActiveTab(activeTab);
+
+    document.querySelectorAll('[data-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            setActiveTab(btn.dataset.tab);
+        })
+    })
+
+    function formatSource(url) {
+        try {
+            const hostname = new URL(url).hostname.replace('www.', '');
+
+            const map = {
+                'wikipedia.org': 'Wikipedia',
+                'github.com': 'GitHub',
+                'google.com': 'Google',
+                'bing.com': 'Bing',
+                'duckduckgo.com': 'DuckDuckGo',
+                'facebook.com': 'Facebook',
+            };
+
+            return map[hostname] || hostname;
+        } catch {
+            return '';
+        }
+    }
+
 
     let currentQuery = '';
     let currentPage = 1;
@@ -294,54 +346,68 @@ document.addEventListener('DOMContentLoaded', () => {
         return Number(settingsState.resultsPerPage) || 10;
     }
 
+    function renderWeb(data) {
+        webResultsNode.insertAdjacentHTML(
+            'beforeend',
+            data.map(item => `
+            <article class="web-card">
+                <div class="web-meta">${item.source?.join(', ') || ''}</div>
+                <a class="web-title" href="${item.url}" target="_blank">${item.title || item.url}</a>
+                <div class="web-url">${item.url}</div>
+                <p class="web-content">${item.content || ''}</p>
+            </article>
+        `).join('')
+        );
+    }
+
+    function renderImages(data) {
+        imageResultsNode.insertAdjacentHTML(
+            'beforeend',
+            data.map(item => `
+            <a href="${item.url}" target="_blank" class="image-card">
+                <img src="${item.thumbnail || item.url}" alt="${item.title || ''}" loading="lazy" />
+                <div class="image-title">${item.title || ''}</div>
+                <div class="image-url">${formatSource(item.url)}</div>
+            </a>
+        `).join('')
+        );
+    }
+
     async function loadResults(page) {
-        if (loading || !currentQuery || (!hasMore && page > 1)) {
-            return;
-        }
+        if (loading || !currentQuery || (!hasMore && page > 1)) return;
 
         loading = true;
+
         const pageSize = getPageSize();
+
         const response = await fetch(
-            `/search?q=${encodeURIComponent(currentQuery)}&page=${page}&count=${pageSize}&engines=${getEngines()}`
+            `/search?q=${encodeURIComponent(currentQuery)}&page=${page}&count=${pageSize}&type=${activeTab}&engines=${getEngines()}`
         );
+
         const data = await response.json();
 
         if (!response.ok || data.error) {
-            if (page === 1) {
-                resultsNode.innerHTML = `<div class="message">${data.error || 'Search failed'}</div>`;
-            }
             loading = false;
             hasMore = false;
             return;
         }
 
         if (!Array.isArray(data) || data.length === 0) {
-            if (page === 1) {
-                resultsNode.innerHTML = '<div class="message">No results found.</div>';
-            }
             hasMore = false;
             loading = false;
             return;
         }
 
         if (page === 1) {
-            resultsNode.innerHTML = '';
+            webResultsNode.innerHTML = '';
+            imageResultsNode.innerHTML = '';
         }
 
-        resultsNode.insertAdjacentHTML(
-            'beforeend',
-            data
-                .map(
-                    (item) => `
-            <article class="result-card">
-              <a class="result-title" href="${item.url}" target="_blank" rel="noopener noreferrer">${item.title || item.url}</a>
-              <div class="result-url">${item.url}</div>
-              <p class="result-content">${item.content || 'No description available.'}</p>
-            </article>
-          `
-                )
-                .join('')
-        );
+        if (activeTab === 'images') {
+            renderImages(data);
+        } else {
+            renderWeb(data);
+        }
 
         hasMore = data.length >= pageSize;
         currentPage = page;
@@ -365,7 +431,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentQuery = queryInput.value.trim();
         currentPage = 1;
         hasMore = true;
-        resultsNode.innerHTML = '';
+        webResultsNode.innerHTML = '';
+        imageResultsNode.innerHTML = '';
         if (!currentQuery) {
             resultsNode.textContent = 'Please enter a search term.';
             return;
