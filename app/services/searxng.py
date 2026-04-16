@@ -1,11 +1,16 @@
 import requests
 from app.core.config import SEARXNG_URL, TIMEOUT
 
-def search(query: str, page: int = 1):
+def search(query: str, page: int = 1, count: int = 10):
     try:
         response = requests.get(
             f"{SEARXNG_URL}/search",
-            params={"q": query, "format": "json", "pageno": page},
+            params={
+                "q": query,
+                "format": "json",
+                "pageno": page,
+                "count": count,
+            },
             timeout=TIMEOUT,
         )
         response.raise_for_status()

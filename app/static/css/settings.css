@@ -1,0 +1,113 @@
+.settings-button {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 9998;
+  width: 3.6rem;
+  height: 3.6rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.settings-button:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 17, 21, 0.9);
+}
+
+.settings-overlay[hidden] {
+  display: none;
+}
+
+.settings-panel {
+  width: min(560px, calc(100vw - 3rem));
+  max-height: min(90vh, 760px);
+  overflow: auto;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  background: rgba(18, 21, 27, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.settings-close {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.settings-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.settings-field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.settings-field span {
+  font-size: 0.95rem;
+  color: rgba(230, 230, 230, 0.85);
+}
+
+.settings-field input,
+.settings-field select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+.checkbox-field {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.settings-actions {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.settings-actions button {
+  border: none;
+  border-radius: 0.85rem;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--bg);
+}

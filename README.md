@@ -174,7 +174,8 @@ Contributions, ideas, and feedback are welcome:
 
 Open an issue
 Suggest features
-Join the discussion on Discord
+Join the discussion on 
+
 [![Discord][discord]][discord-url]
 
 ## 📊 Status

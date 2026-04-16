@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recollect</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/theme-default.css" />
+    <link rel="stylesheet" href="/static/css/settings.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="page-header">
+        <h1>Recollect</h1>
+        <p>Search the web with SearXNG</p>
+      </header>
+      <main class="search-panel">
+        {% include 'search.html' %}
+      </main>
+    </div>
+    {% include 'settings.html' %}
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>
