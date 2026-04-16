@@ -1,10 +1,10 @@
+<h1 align="center">Recollect</h1>
+
 <p align="center">
   <img src="logo.png" width="120" />
 </p>
 
-<h1 align="center">Recollect</h1>
-
-<p align="center">
+<div align="center">
 
 [![License][license]][license-url]
 [![Stars][stars]][stars-url]
@@ -12,9 +12,9 @@
 [![Status][status]][status-url]
 [![Docker][docker]][docker-url]
 
-</p>
+</div>
 
-<p align="center">Turn the web into reusable knowledge.</p>
+<p align="center"><strong>Recollect</strong> turns the open web into a personal <strong>knowledge</strong> system — where every search becomes something you can <strong>reuse</strong>, not just forget.</p>
 
 ---
 
